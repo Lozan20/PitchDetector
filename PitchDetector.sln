@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PitchDetector", "PitchDetector\PitchDetector.csproj", "{E0DF51B5-3950-4C30-A49C-12CFC1B88710}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DED9F2B1-09A4-4B8B-BB77-36AEE583991B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0DF51B5-3950-4C30-A49C-12CFC1B88710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0DF51B5-3950-4C30-A49C-12CFC1B88710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0DF51B5-3950-4C30-A49C-12CFC1B88710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0DF51B5-3950-4C30-A49C-12CFC1B88710}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1153C7FB-5BB7-469F-A1DD-5249AEBB1551}
+	EndGlobalSection
+EndGlobal
