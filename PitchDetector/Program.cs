@@ -1,22 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using Numpy;
 
 namespace PitchDetector
 {
-	static class Program
+
+	public static class Program
 	{
-		/// <summary>
-		/// Główny punkt wejścia dla aplikacji.
-		/// </summary>
+		public static RecordingDevice rD;
+		public static Form1 form;
+		public static Graph graphData;
 		[STAThread]
 		static void Main()
 		{
+			graphData = new Graph();
+			rD = new RecordingDevice(0); // select first device by default 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form1());
+			form = new Form1();
+			
+			Application.Run(form);
 		}
 	}
 }
