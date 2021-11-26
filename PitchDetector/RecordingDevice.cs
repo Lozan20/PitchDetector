@@ -16,7 +16,7 @@ namespace PitchDetector
         public int BUFFERSIZE { get; set; }
         public RecordingDevice(int index)
         {
-            RATE = 48000;
+            RATE = 44100;
             BUFFERSIZE = 16384;
             assignDevice(index);
             assignBuffer();

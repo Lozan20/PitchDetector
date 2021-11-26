@@ -24,6 +24,7 @@ namespace PitchDetector
 
             formsPlot1.Render();
             FFT.performFFT();
+
             formsPlot2.Render();
         }
 

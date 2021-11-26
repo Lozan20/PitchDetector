@@ -15,11 +15,11 @@ namespace PitchDetector
         static int frameSize = Program.rD.BUFFERSIZE;
         static double[] hann = MathNet.Numerics.Window.Hamming(Program.rD.BUFFERSIZE);
         static byte[] frames = new byte[frameSize];
-        static double[] octaveBands = { 50, 100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600};
+        static double[] octaveBands = { 16,32,64,128,256,512};
         public double[] Hann { get => hann; set => hann = value; }
-        static private double[] spectrumHPS = Program.graphData.FftY;
+        static private double[] spectrumHPS;
         public double[] SpectrumHPS { get => spectrumHPS; set => spectrumHPS = value; }
-        static double whiteNoise = 0.08;
+        static double whiteNoise = 0.2;
 
 
         public TunerHPS()
@@ -31,7 +31,9 @@ namespace PitchDetector
         {
             Array temp;
             double delta = Program.rD.BUFFERSIZE / frameSize;
-            spectrumHPS = Program.graphData.FftY;
+            //Console.WriteLine("3.Kopiuje dane z bufora");
+            spectrumHPS = Program.graphData.FftY.Take(Program.graphData.FftY.Count()/4).ToArray();
+            //Console.WriteLine("4.Skonczylem kopiowac dane z bufora");
             //var normalizedHPSValue = (double)Numpy.np.linalg.norm(spectrumHPS.ToArray(), 2);
             var signalPow = Math.Pow((double)Numpy.np.linalg.norm(Program.graphData.SignalWave, 2), 2) / Program.graphData.SignalWave.Length;
             if (signalPow < 100000)
@@ -39,21 +41,22 @@ namespace PitchDetector
                 Program.form.Label3.Text = "low signal power";
                 return;
             }
+            Program.form.timer1.Enabled = false;
             for (int i=0; i<octaveBands.Length - 1;i++)
             {
                 var start = (int)(octaveBands[i] / delta);
                 var end = (int)(octaveBands[i+1] / delta);
-                if(Program.graphData.FftY.Count() <= end)
-                {
-                    end = Program.graphData.FftY.Count();
-                }
+                //if(Program.graphData.FftY.Count() <= end)
+                //{
+                //    end = Program.graphData.FftY.Count();
+                //}
                 temp = spectrumHPS.Skip(start).Take(end-start).ToArray();
                 var averageSignalPower = Math.Pow(Math.Pow((double)Numpy.np.linalg.norm(temp,2),2)/(end-start),0.5);
                 for (int l = start; l<end;l++)
                 {
                     if(spectrumHPS[l] < averageSignalPower * whiteNoise)
                     {
-                        spectrumHPS[l]= 0.0;
+                        spectrumHPS[l] = 0.0;
                     }
                 }
             }
@@ -86,8 +89,9 @@ namespace PitchDetector
                 second.Clear();
             }
             var max = tmp_hps_spec.Max();
-            var maxInd = Array.IndexOf(tmp_hps_spec, max) * (48000.0/16384.0 / 5.0)*2;
+            var maxInd = Array.IndexOf(tmp_hps_spec, max) * (44100.0/16384.0 / 5.0)*2;
             Program.form.Label3.Text = maxInd.ToString();
+            Program.form.timer1.Enabled = true;
         }
     }
 }

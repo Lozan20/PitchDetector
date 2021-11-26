@@ -30,10 +30,16 @@ namespace PitchDetector
             //}
             int j = 0;
             int k = 1;
+            //for (int i = 0; i < frames.Length / BYTES_PER_POINT; i++)
+            //{
+            //    // bit shift the byte buffer into the right variable format
+            //    Program.graphData.signalWave[i] = BitConverter.ToInt16(frames, i * 2) * hann[i];
+
+            //}
             for (int i = 0; i < frames.Length / BYTES_PER_POINT; i++)
             {
                 // bit shift the byte buffer into the right variable format
-                shiftedFrames[i] = (double)BitConverter.ToInt16(frames, i * 2);
+                shiftedFrames[i] = BitConverter.ToInt16(frames, i * 2);
                 if (i % 2 == 0)
                 {
                     Program.graphData.signalWave[j] = shiftedFrames[k] * hann[i];
