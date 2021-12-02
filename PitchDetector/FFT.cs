@@ -16,6 +16,9 @@ namespace PitchDetector
                 fftComplex[i] = new System.Numerics.Complex(Program.graphData.signalWave[i], 0);
             }
             Accord.Math.FourierTransform.FFT(fftComplex, Accord.Math.FourierTransform.Direction.Forward);
+
+
+            
             for (int i = 0; i < Program.graphData.signalWave.Length / 2; i++)
             {
                 Program.graphData.fftY[i] = fftComplex[i].Magnitude;

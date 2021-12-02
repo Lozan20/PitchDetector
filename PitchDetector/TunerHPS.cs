@@ -12,8 +12,8 @@ namespace PitchDetector
 {
     class TunerHPS
     {
-        static int frameSize = Program.rD.BUFFERSIZE;
-        static double[] hann = MathNet.Numerics.Window.Hamming(Program.rD.BUFFERSIZE);
+        static int frameSize = RecordingDevice.BUFFERSIZE;
+        static double[] hann = MathNet.Numerics.Window.Hamming(RecordingDevice.BUFFERSIZE);
         static byte[] frames = new byte[frameSize];
         static double[] octaveBands = { 16,32,64,128,256,512};
         public double[] Hann { get => hann; set => hann = value; }
@@ -30,13 +30,13 @@ namespace PitchDetector
         public static void hannplot()
         {
             Array temp;
-            double delta = Program.rD.BUFFERSIZE / frameSize;
+            double delta = RecordingDevice.BUFFERSIZE / frameSize;
             //Console.WriteLine("3.Kopiuje dane z bufora");
-            spectrumHPS = Program.graphData.FftY.Take(Program.graphData.FftY.Count()/4).ToArray();
+            spectrumHPS = Program.graphData.FftY.Take(Program.graphData.FftY.Count()).ToArray();
             //Console.WriteLine("4.Skonczylem kopiowac dane z bufora");
             //var normalizedHPSValue = (double)Numpy.np.linalg.norm(spectrumHPS.ToArray(), 2);
             var signalPow = Math.Pow((double)Numpy.np.linalg.norm(Program.graphData.SignalWave, 2), 2) / Program.graphData.SignalWave.Length;
-            if (signalPow < 100000)
+            if (signalPow < 1000000)
             {
                 Program.form.Label3.Text = "low signal power";
                 return;
@@ -89,7 +89,7 @@ namespace PitchDetector
                 second.Clear();
             }
             var max = tmp_hps_spec.Max();
-            var maxInd = Array.IndexOf(tmp_hps_spec, max) * (44100.0/16384.0 / 5.0)*2;
+            var maxInd = Array.IndexOf(tmp_hps_spec, max) * (44100.0/8192.0 / 5.0);
             Program.form.Label3.Text = maxInd.ToString();
             Program.form.timer1.Enabled = true;
         }

@@ -13,11 +13,12 @@ namespace PitchDetector
         private WaveInEvent wi { get; set; }
         public  BufferedWaveProvider bwp { get; set; }
         public int RATE { get; set; }
-        public int BUFFERSIZE { get; set; }
+        private static int  buffersize = 16384;
+        public static int BUFFERSIZE { get=>buffersize; set => buffersize = value; }
         public RecordingDevice(int index)
         {
             RATE = 44100;
-            BUFFERSIZE = 16384;
+            //BUFFERSIZE = 16384;
             assignDevice(index);
             assignBuffer();
             try

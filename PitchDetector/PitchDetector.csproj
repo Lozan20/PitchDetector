@@ -216,6 +216,7 @@
     <Compile Include="RecordingDevice.cs" />
     <Compile Include="TunerDFT.cs" />
     <Compile Include="TunerHPS.cs" />
+    <Compile Include="TunerYIN.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

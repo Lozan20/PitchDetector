@@ -32,6 +32,7 @@ namespace PitchDetector
         {
             Note note = new Note(TunerDFT.findHighestFrequency());
             TunerHPS.hannplot();
+            TunerYIN.yin();
             closestNote.Text = note.Sound;
             closestPitch.Text = note.Pitch.ToString();
             label1.Text = note.CurrentMaxPitch.ToString();
@@ -48,6 +49,11 @@ namespace PitchDetector
                 comboBox1.Items.Add(WaveIn.GetCapabilities(i).ProductName);
             }
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

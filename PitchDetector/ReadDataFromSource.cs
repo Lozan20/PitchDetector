@@ -8,8 +8,8 @@ namespace PitchDetector
 {
     public static class ReadDataFromSource
     {
-        static int frameSize = Program.rD.BUFFERSIZE;
-        static double[] hann = MathNet.Numerics.Window.Hamming(Program.rD.BUFFERSIZE);
+        static int frameSize = RecordingDevice.BUFFERSIZE;
+        static double[] hann = MathNet.Numerics.Window.Hamming(RecordingDevice.BUFFERSIZE);
         static byte [] frames = new byte[frameSize];
         static int BYTES_PER_POINT = 2;
         static double[] shiftedFrames = new double[frameSize/BYTES_PER_POINT];
@@ -30,19 +30,22 @@ namespace PitchDetector
             //}
             int j = 0;
             int k = 1;
+
             //for (int i = 0; i < frames.Length / BYTES_PER_POINT; i++)
             //{
             //    // bit shift the byte buffer into the right variable format
             //    Program.graphData.signalWave[i] = BitConverter.ToInt16(frames, i * 2) * hann[i];
 
             //}
+
             for (int i = 0; i < frames.Length / BYTES_PER_POINT; i++)
             {
                 // bit shift the byte buffer into the right variable format
-                shiftedFrames[i] = BitConverter.ToInt16(frames, i * 2);
+                Program.graphData.SignalWave[i] = BitConverter.ToInt16(frames, i * 2) * hann[i]; //poprawic hanninga bo sie nakladaja co 2*n wartosci
+
                 if (i % 2 == 0)
                 {
-                    Program.graphData.signalWave[j] = shiftedFrames[k] * hann[i];
+                    Program.graphData.SignalWaveYin[j] = Program.graphData.SignalWave[k];
                     j++;
                     k += 2;
                 }

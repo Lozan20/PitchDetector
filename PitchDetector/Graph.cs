@@ -8,14 +8,15 @@ namespace PitchDetector
 {
     public class Graph
     {
-        public double[] signalWave = new double[4096];
-        //public double[] signalWave = new double[8192];
-        public double[] fftY = new double[2048];
-        public double[] fftX = new double[2048];
+        public double[] signalWave = new double[RecordingDevice.BUFFERSIZE/2];
+        private double[] signalWaveYin = new double[RecordingDevice.BUFFERSIZE / 4];
+        public double[] fftY = new double[RecordingDevice.BUFFERSIZE / 4];
+        public double[] fftX = new double[RecordingDevice.BUFFERSIZE / 4];
 
         public double[] SignalWave { get => signalWave; set => signalWave = value; }
         public double[] FftY { get => fftY; set => fftY = value; }
         public double[] FftX { get => fftX; set => fftX = value; }
+        public double[] SignalWaveYin { get => signalWaveYin; set => signalWaveYin = value; }
 
         public void initializeGraphs(ScottPlot.FormsPlot plotSignal,ScottPlot.FormsPlot plotFFT)
         {
