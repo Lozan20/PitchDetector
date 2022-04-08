@@ -18,23 +18,20 @@ namespace PitchDetector
             Program.graphData.initializeGraphs(formsPlot1, formsPlot2);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e) // 17ms
         {
-            ReadDataFromSource.getConvertedData("DFT");
-
+            ReadDataFromSource.getConvertedData();
             formsPlot1.Render();
             FFT.performFFT();
-
             formsPlot2.Render();
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
+        private void timer2_Tick(object sender, EventArgs e) 
         {
             Note note = new Note(TunerDFT.findHighestFrequency());
             TunerHPS.hannplot();
             TunerYIN.yin();
-            closestNote.Text = note.Sound;
-            closestPitch.Text = note.Pitch.ToString();
+            label7.Text = note.Sound;
             label1.Text = note.CurrentMaxPitch.ToString();
         }
 
@@ -49,11 +46,6 @@ namespace PitchDetector
                 comboBox1.Items.Add(WaveIn.GetCapabilities(i).ProductName);
             }
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

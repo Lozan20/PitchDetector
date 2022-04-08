@@ -38,10 +38,9 @@ namespace PitchDetector
                     temp = i % 12;
                 }
                 if (temp == 12) temp = 0;
-                int oktawa = (int)(4 + Math.Floor((temp + 9.0) / 12.0));
+                int oktawa = (int)(4 + Math.Floor((i + 9) / 12.0));
                 this.closestSound = sounds[temp] + oktawa.ToString();
                 this.closestPitch = pitchReference * Math.Pow(2, (double)i / 12);
-
             }
         }
 

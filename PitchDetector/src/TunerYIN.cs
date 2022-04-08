@@ -12,39 +12,38 @@ namespace PitchDetector
         public static double yin()
         {
             double pitch = 0;
-            double[] sig = Program.graphData.SignalWaveYin;
-            float f0Min = 10;
-            float f0Max = 650;
-            int tauMax = Convert.ToInt32(Program.rD.RATE / f0Min);
-            int tauMin = Convert.ToInt32(Program.rD.RATE / f0Max);
-            var df = differenceFunctionScipy(sig, tauMax);
+            double[] sig = Program.calculateAndPlotData.SignalWaveYin;
+            float f0Min = 50;
+            float f0Max = 400;
+            int tauMax = Convert.ToInt32(RecordingDevice.Rate / f0Min);
+            int tauMin = Convert.ToInt32(RecordingDevice.Rate / f0Max);
+            var df = differenceFunction(sig, tauMax);
             var cmdf = cumulativeMeanNormalizedDifferenceFunction(df, tauMax);
-            pitch = getPitch(Program.rD.RATE, cmdf, tauMin, tauMax, 0.1f);
+            pitch = getPitch(RecordingDevice.Rate, cmdf, tauMin, tauMax, 0.1f);
             Program.form.YinFrequency.Text = pitch.ToString();
+            Program.form.Label5.Text = new Note(pitch).Sound;
             return pitch;
 
         }
-        public static double[] differenceFunctionScipy(double [] x, int tau_max)
+        public static double[] differenceFunction(double [] sig, int tau_max)
         {
-            var x2 = new double[x.Length];
-            for(int i=0;i<x.Length;i++)
+            var xPow = new double[sig.Length];
+            for(int i=0;i<sig.Length;i++)
             {
-                x2[i] = x[i] * x[i];
+                xPow[i] = sig[i] * sig[i];
             }
-            var x_cumsum = Numpy.np.cumsum(x2).GetData<double>();
-            //var x_cumsum = Numpy.np.concatenate((Numpy.np.array<double>(0), Numpy.np.cumsum(x2))).GetData<double>();
-
-            var x_reversed = Enumerable.Reverse(x).ToArray();
-            var conv = Numpy.np.convolve(x,x_reversed).GetData<double>();
-            var first = Enumerable.Reverse(x_cumsum).ToArray();
-            var second = x_cumsum[x.Length-1];
-            var third = conv.Take(x.Length).ToArray();
-            var tmp = new double[x.Length];
-            for(int i=0;i<x.Length;i++)
+            double[] sigCumSum = Numpy.np.cumsum(xPow).GetData<double>();
+            double[] sigReversed = Enumerable.Reverse(sig).ToArray();
+            double[] conv = Numpy.np.convolve(sig, sigReversed).GetData<double>();
+            double[] first = Enumerable.Reverse(sigCumSum).ToArray();
+            double second = sigCumSum[sig.Length-1];
+            double[] third = conv.Take(sig.Length).ToArray();
+            double[] df = new double[sig.Length];
+            for(int i=0;i< sig.Length;i++)
             {
-                tmp[i] = first[i] + second - third[i] - (2 * conv[x.Length-1 + i]); //BUG HERE
+                df[i] = first[i] + second - third[i] - (2 * conv[sig.Length-1 + i]);
             }
-            return tmp.Take(tau_max + 1).ToArray();
+            return df.Take(tau_max + 1).ToArray();
         }
         public static double getPitch(int sr,double[] cmdf,int tau_min,int tau_max,double harmo_th)
         {
@@ -72,7 +71,7 @@ namespace PitchDetector
             {
                 cmndf[i] = (df[i] * (double)i / sum[i]);
             }
-            //cmndf[0] = 0;
+            cmndf[0] = 1;
             return cmndf;
         }
     }
